@@ -4,7 +4,7 @@
 
 To run all services:
 
-    docker-compose -f /test_parser/docker-compose.yml up -d
+    docker-compose -f /test_parser/docker-compose.yml up
     
 To run tests:
     
