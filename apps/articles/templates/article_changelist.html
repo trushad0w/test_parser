@@ -1,0 +1,21 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+    <div>
+        <form action="/posts" method="POST">
+            {% csrf_token %}
+                <button type="submit"
+                        style="background: #79aec8;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 4px;
+                        color: #fff;
+                        cursor: pointer;"
+                >
+                    Refresh articles
+                </button>
+        </form>
+    </div>
+    <br />
+    {{ block.super }}
+{% endblock %}

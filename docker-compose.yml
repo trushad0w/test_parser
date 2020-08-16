@@ -1,0 +1,85 @@
+version: '3.7'
+
+x-common-variables: &common-variables
+  - DEBUG=True
+  - DB_NAME=articles
+  - DB_USER=postgres
+  - DB_PASSWORD=postgres
+  - DB_HOST=db
+  - DB_PORT=5432
+  - REDIS_URL=redis://redis:6379/0
+  - POSTS_CRON=*/15 * * * *
+
+services:
+  db:
+    image: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_DB=articles
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./initdb.sh:/docker-entrypoint-initdb.d/init-database.sh
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+  tests:
+    build: .
+    image: test_parser/baseimage:version
+    command: pytest -v
+    environment:
+      *common-variables
+    volumes:
+      - .:/dist
+    ports:
+      - "8005:8005"
+    depends_on:
+      - db
+  web:
+    image: test_parser/baseimage:version
+    command: >
+      /bin/sh -c "python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8003"
+    environment:
+      *common-variables
+    volumes:
+      - .:/dist
+    ports:
+      - "8003:8003"
+    depends_on:
+      - db
+      - tests
+  dramatiq:
+    image: test_parser/baseimage:version
+    command: python manage.py rundramatiq
+    environment:
+      *common-variables
+    volumes:
+      - .:/dist
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+      - web
+      - redis
+  scheduler:
+    image: test_parser/baseimage:version
+    command: python manage.py articles_scheduler
+    environment:
+      *common-variables
+    volumes:
+      - .:/dist
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+      - web
+      - redis
+
+volumes:
+  postgres:
