@@ -31,7 +31,7 @@ At conf folder in .env file fill the required parameters:
     # run migrations
     >> python manage.py migrate
 
-####Running services locally:
+#### Running services locally:
        
     # To run tests
     >> pytest -v
@@ -56,7 +56,7 @@ params:
     order = valid values ( id, url, title)
     order_direction = valid values (asc, desc)
 
-/_srv/admin/ - admin panel
+/_srv/admin - admin panel
 
 Default login/pass: mainadmin/admin
 
