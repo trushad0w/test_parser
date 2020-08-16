@@ -1,6 +1,6 @@
-##Test application for parsing hacker news.
+## Test application for parsing hacker news.
 
-####How to start
+#### How to start
 
 To run all services:
 
@@ -10,7 +10,7 @@ To run tests:
     
     docker-compose -f /test_parser/docker-compose.yml run tests
 
-###To run locally:
+### To run locally:
 
 PostgreSQL and Redis should be up and running
 
@@ -23,7 +23,7 @@ At conf folder in .env file fill the required parameters:
     DB_PORT=
     REDIS_URL=
 
-####Install requirements:
+#### Install requirements:
 
     >> python3 -m venv <env_name>
     >> <env_name>/bin/activate
@@ -45,7 +45,7 @@ At conf folder in .env file fill the required parameters:
     # To run dramatiq
     >> python manage.py rundramatiq
 
-####Main routes:
+#### Main routes:
 
 /posts - GET
 
